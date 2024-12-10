@@ -1,23 +1,28 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import {
+  getOrderSelector,
+  fetchOrderThunk
+} from '../../services/slices/orderSlice';
+import { useDispatch, useSelector } from '../../services/store';
+import { useParams } from 'react-router-dom';
+import { getIngredientsSelector } from '../../services/slices/IngredientsSlice';
 
+// Jтображает подробную информацию о заказе, включая ингредиенты и общую стоимость. Загружает данные о заказе из Redux при первом рендере, если они еще не загружены.
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+  const dispatch = useDispatch();
+  const orderNumber = Number(useParams().number);
 
-  const ingredients: TIngredient[] = [];
+  useEffect(() => {
+    dispatch(fetchOrderThunk(orderNumber));
+  }, [dispatch]);
 
-  /* Готовим данные для отображения */
+  const orderData = useSelector(getOrderSelector).order;
+
+  const ingredients: TIngredient[] = useSelector(getIngredientsSelector);
+
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 

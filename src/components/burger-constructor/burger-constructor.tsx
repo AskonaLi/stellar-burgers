@@ -1,25 +1,51 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { useDispatch, useSelector } from '../../services/store';
+import { useNavigate } from 'react-router-dom';
 
+import {
+  getConstructorSelector,
+  setOrderRequest,
+  sendOrderThunk,
+  setNullOrderModalData
+} from '../../services/slices/BurgerConstructorSlice';
+
+import { isAuthorizedSelector } from '../../services/slices/UserInfoSlice';
+
+// Компонент, который управляет функциональностью конструктора бургеров
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const orderRequest = false;
+  const constructorState = useSelector(getConstructorSelector);
+  const constructorItems = constructorState.constructorItems;
+  const orderRequest = constructorState.orderRequest;
+  const orderModalData = constructorState.orderModalData;
+  const isAuthorized = useSelector(isAuthorizedSelector);
 
-  const orderModalData = null;
-
+  // Обработчик нажатия на кнопку "Оформить заказ"
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
-  };
-  const closeOrderModal = () => {};
+    if (constructorItems.bun && !isAuthorized) navigate('/login');
+    if (constructorItems.bun && isAuthorized) {
+      dispatch(setOrderRequest(true));
 
+      const bunId = constructorItems.bun._id;
+      const ingredientsIds = constructorItems.ingredients.map(
+        (ingredient) => ingredient._id
+      );
+      const order = [bunId, ...ingredientsIds, bunId];
+      dispatch(sendOrderThunk(order));
+    }
+  };
+
+  // Обработчик закрытия модального окна
+  const closeOrderModal = () => {
+    dispatch(setOrderRequest(false));
+    dispatch(setNullOrderModalData());
+  };
+
+  // Подсчет общей стоимости заказа
   const price = useMemo(
     () =>
       (constructorItems.bun ? constructorItems.bun.price * 2 : 0) +
@@ -29,8 +55,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  return null;
 
   return (
     <BurgerConstructorUI

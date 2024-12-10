@@ -6,6 +6,7 @@ import { FeedUIProps } from './type';
 import { OrdersList, FeedInfo } from '@components';
 import { RefreshButton } from '@zlden/react-developer-burger-ui-components';
 
+//  * Компонент отображения ленты заказов. Включает в себя список заказов и дополнительную информацию. Также позволяет обновить ленту заказов с помощью кнопки "Обновить"
 export const FeedUI: FC<FeedUIProps> = memo(({ orders, handleGetFeeds }) => (
   <main className={styles.containerMain}>
     <div className={`${styles.titleBox} mt-10 mb-5`}>
