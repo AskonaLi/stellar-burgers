@@ -6,6 +6,7 @@ import { ModalUI } from '@ui';
 
 const modalRoot = document.getElementById('modals');
 
+// Комонент-обертка для отображения модального окна с переданным содержимым
 export const Modal: FC<TModalProps> = memo(({ title, onClose, children }) => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {

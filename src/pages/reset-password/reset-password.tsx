@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { resetPasswordApi } from '@api';
 import { ResetPasswordUI } from '@ui-pages';
 
+// Компонент страницы обновления пароля
 export const ResetPassword: FC = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');

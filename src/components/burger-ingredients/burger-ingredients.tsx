@@ -1,16 +1,37 @@
 import { useState, useRef, useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { TTabMode } from '@utils-types';
+import { TIngredient, TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
+import { useSelector } from '../../services/store';
+import { getIngredientsSelector } from '../../services/slices/IngredientsSlice';
+import { Preloader } from '@ui';
 
+// Компонент-обертка, предназначен для описания логики отображения списка ингредиентов
 export const BurgerIngredients: FC = () => {
-  /** TODO: взять переменные из стора */
-  const buns = [];
-  const mains = [];
-  const sauces = [];
+  const ingredients: TIngredient[] = useSelector(getIngredientsSelector);
 
+  // Фильтрация ингридиентов по их типу
+  const buns = ingredients.filter((ingredient) => {
+    if (ingredient.type === 'bun') {
+      return ingredient;
+    }
+  });
+  const mains = ingredients.filter((ingredient) => {
+    if (ingredient.type === 'main') {
+      return ingredient;
+    }
+  });
+  const sauces = ingredients.filter((ingredient) => {
+    if (ingredient.type === 'sauce') {
+      return ingredient;
+    }
+  });
+
+  // Текущее состояние выбранной вкладки
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
+
+  // Ссылки на заголовки для прокрутки по вкладкам
   const titleBunRef = useRef<HTMLHeadingElement>(null);
   const titleMainRef = useRef<HTMLHeadingElement>(null);
   const titleSaucesRef = useRef<HTMLHeadingElement>(null);
@@ -27,6 +48,7 @@ export const BurgerIngredients: FC = () => {
     threshold: 0
   });
 
+  // Определяем текущую вкладку на основе видимой на экране секции
   useEffect(() => {
     if (inViewBuns) {
       setCurrentTab('bun');
@@ -37,6 +59,7 @@ export const BurgerIngredients: FC = () => {
     }
   }, [inViewBuns, inViewFilling, inViewSauces]);
 
+  // Обработчик кликов по вкладкам
   const onTabClick = (tab: string) => {
     setCurrentTab(tab as TTabMode);
     if (tab === 'bun')
@@ -46,8 +69,6 @@ export const BurgerIngredients: FC = () => {
     if (tab === 'sauce')
       titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-
-  return null;
 
   return (
     <BurgerIngredientsUI

@@ -8,6 +8,7 @@ const statusText: { [key: string]: string } = {
   created: 'Создан'
 };
 
+// Компонент для отображения статуса заказа
 export const OrderStatus: FC<OrderStatusProps> = ({ status }) => {
   let textStyle = '';
   switch (status) {
