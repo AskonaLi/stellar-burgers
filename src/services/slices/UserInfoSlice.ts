@@ -30,33 +30,27 @@ const initialState: TUserState = {
 
 // Асинхронные операции для работы с пользователем
 
-export const loginUserThunk = createAsyncThunk(
-  'user/login',
-  (loginData: TLoginData) => loginUserApi(loginData)
-);
+export const loginUserThunk = createAsyncThunk('user/login', loginUserApi);
 
 export const getUserThunk = createAsyncThunk('user/get', getUserApi);
 
 export const registerUserThunk = createAsyncThunk(
   'user/register',
-  (registerData: TRegisterData) => registerUserApi(registerData)
+  registerUserApi
 );
 
 export const logoutUserThunk = createAsyncThunk('user/logout', logoutApi);
 
-export const updateUserThunk = createAsyncThunk(
-  'user/update',
-  (user: Partial<TRegisterData>) => updateUserApi(user)
-);
+export const updateUserThunk = createAsyncThunk('user/update', updateUserApi);
 
 export const forgotPasswordThunk = createAsyncThunk(
   'user/forgotPassword',
-  (data: { email: string }) => forgotPasswordApi(data)
+  forgotPasswordApi
 );
 
 export const resetPasswordThunk = createAsyncThunk(
   'user/resetPassword',
-  (data: { password: string; token: string }) => resetPasswordApi(data)
+  resetPasswordApi
 );
 
 export const updateUser = createAsyncThunk('user/update', updateUserApi);

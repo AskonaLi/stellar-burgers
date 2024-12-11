@@ -1,5 +1,10 @@
-import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
-import { TConstructorIngredient, TOrder } from '@utils-types';
+import {
+  createSlice,
+  createAsyncThunk,
+  nanoid,
+  PayloadAction
+} from '@reduxjs/toolkit';
+import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 import { orderBurgerApi } from '../../utils/burger-api';
 
 // Тип состояния, которое будет храниться в Redux для конструктора бургера
@@ -38,14 +43,20 @@ const burgerConstructorSlice = createSlice({
   initialState,
   reducers: {
     // Экшен для добавления ингредиента в конструктор
-    addIngredient: (state, action) => {
-      if (action.payload.type === 'bun') {
-        state.constructorItems.bun = action.payload; // Если ингредиент - булочка, заменяем её
-      } else {
-        state.constructorItems.ingredients.push({
-          ...action.payload, // Добавляем новый ингредиент в список
-          id: nanoid() // Генерируем уникальный ID для каждого ингредиента
-        });
+    addIngredient: {
+      prepare: (ingredient: TIngredient) => {
+        const key = nanoid();
+        return { payload: { ...ingredient, id: key } }; // Генерируем уникальный ID для каждого ингредиента
+      },
+      reducer: (
+        state,
+        action: PayloadAction<TConstructorIngredient & { id: string }>
+      ) => {
+        if (action.payload.type === 'bun') {
+          state.constructorItems.bun = action.payload; // Если ингредиент - булочка, заменяем её
+        } else {
+          state.constructorItems.ingredients.push(action.payload); // Добавляем новый ингредиент в список
+        }
       }
     },
     // Экшен для удаления ингредиента из конструктора
