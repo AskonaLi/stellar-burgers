@@ -75,4 +75,5 @@ export const { getFeedStateSelector, getOrdersSelector } =
   feedDataSlice.selectors;
 
 // Экспорт редьюсера для работы с состоянием
-export default feedDataSlice.reducer;
+const feedDataReducer = feedDataSlice.reducer;
+export default feedDataReducer;

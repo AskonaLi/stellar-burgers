@@ -52,4 +52,5 @@ export { initialState as orderInitialState };
 export const { getOrderSelector } = orderSlice.selectors;
 
 // Экспорт редьюсера для работы с состоянием
-export default orderSlice.reducer;
+const orderReducer = orderSlice.reducer;
+export default orderReducer;

@@ -140,4 +140,5 @@ export const {
 export const { getConstructorSelector } = burgerConstructorSlice.selectors;
 
 // Экспорт редьюсера
-export default burgerConstructorSlice.reducer;
+const burgerConstructorReducer = burgerConstructorSlice.reducer;
+export default burgerConstructorReducer;
