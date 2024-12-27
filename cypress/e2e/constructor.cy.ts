@@ -36,32 +36,68 @@ beforeEach(() => {
 // Тестирование добавления ингредиентов в конструктор
 describe('Добавление ингредиента в конструктор', () => {
   it('Увеличение счётчика ингредиента при добавлении в конструктор', () => {
+    cy.get(FILLING_ID).find('.counter__num').should('not.exist'); // Убеждаемся в том, что конструктор пуст
     cy.get(FILLING_ID).children('button').click(); // Нажимаем кнопку добавления начинки
     cy.get(FILLING_ID).find('.counter__num').contains('1'); // Проверяем увеличение счётчика
   });
 
   describe('Добавление булок и начинок', () => {
     it('Добавление булки и начинки в конструктор', () => {
+      cy.get('[data-cy=bun-top]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в нижней части
+      cy.get('[data-cy=filling-list]').contains('Говяжий метеорит (отбивная)').should('not.exist'); // Убедимся что начинки нет в конструкторе
       cy.get(BUN_ID_1).children('button').click(); // Добавляем первую булку
+      cy.get('[data-cy=bun-top]').contains('Краторная булка N-200i').should('exist'); // Убедимся что первая булка есть в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Краторная булка N-200i').should('exist'); // Убедимся что первая булка есть в конструкторе в нижней части
       cy.get(FILLING_ID).children('button').click(); // Добавляем начинку
+      cy.get('[data-cy=filling-list]').contains('Говяжий метеорит (отбивная)').should('exist'); // Убедимся что начинка есть в конструкторе
     });
 
+
     it('Добавление булки после добавления начинки в конструктор', () => {
+      cy.get('[data-cy=filling-list]').contains('Говяжий метеорит (отбивная)').should('not.exist'); // Убедимся что начинки нет в конструкторе
+      cy.get('[data-cy=bun-top]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в нижней части
       cy.get(FILLING_ID).children('button').click(); // Добавляем начинку
+      cy.get('[data-cy=filling-list]').contains('Говяжий метеорит (отбивная)').should('exist'); // Убедимся что начинка есть в конструкторе
       cy.get(BUN_ID_1).children('button').click(); // Добавляем первую булку
+      cy.get('[data-cy=bun-top]').contains('Краторная булка N-200i').should('exist'); // Убедимся что первая булка есть в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Краторная булка N-200i').should('exist'); // Убедимся что первая булка есть в конструкторе в нижней части
     });
   });
 
   describe('Замена булок', () => {
     it('Замена булки на другую без начинки в конструкторе', () => {
+      cy.get('[data-cy=bun-top]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в нижней части
+      cy.get('[data-cy=bun-top]').contains('Флюоресцентная булка R2-D3').should('not.exist'); // Убедимся что второй булки нет в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Флюоресцентная булка R2-D3').should('not.exist'); // Убедимся что второй булки нет в конструкторе в нижней части
       cy.get(BUN_ID_1).children('button').click(); // Добавляем первую булку
+      cy.get('[data-cy=bun-top]').contains('Краторная булка N-200i').should('exist'); // Убедимся что первая булка есть в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Краторная булка N-200i').should('exist'); // Убедимся что первая булка есть в конструкторе в нижней части
       cy.get(BUN_ID_2).children('button').click(); // Меняем её на вторую булку
+      cy.get('[data-cy=bun-top]').contains('Флюоресцентная булка R2-D3').should('exist'); // Убедимся что вторая булка есть в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Флюоресцентная булка R2-D3').should('exist'); // Убедимся что вторая булка есть в конструкторе в нижней части
+      cy.get('[data-cy=bun-top]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в нижней части
     });
 
     it('Замена булки на другую с добавленной начинкой в конструкторе', () => {
+      cy.get('[data-cy=bun-top]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в нижней части
+      cy.get('[data-cy=filling-list]').contains('Говяжий метеорит (отбивная)').should('not.exist'); // Убедимся что начинки нет в конструкторе
+      cy.get('[data-cy=bun-top]').contains('Флюоресцентная булка R2-D3').should('not.exist'); // Убедимся что второй булки нет в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Флюоресцентная булка R2-D3').should('not.exist'); // Убедимся что второй булки нет в конструкторе в нижней части
       cy.get(BUN_ID_1).children('button').click(); // Добавляем первую булку
+      cy.get('[data-cy=bun-top]').contains('Краторная булка N-200i').should('exist'); // Убедимся что первая булка есть в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Краторная булка N-200i').should('exist'); // Убедимся что первая булка есть в конструкторе в нижней части
       cy.get(FILLING_ID).children('button').click(); // Добавляем начинку
+      cy.get('[data-cy=filling-list]').contains('Говяжий метеорит (отбивная)').should('exist'); // Убедимся что начинка есть в конструкторе
       cy.get(BUN_ID_2).children('button').click(); // Меняем первую булку на вторую
+      cy.get('[data-cy=bun-top]').contains('Флюоресцентная булка R2-D3').should('exist'); // Убедимся что вторая булка есть в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Флюоресцентная булка R2-D3').should('exist'); // Убедимся что вторая булка есть в конструкторе в нижней части
+      cy.get('[data-cy=bun-top]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в верхней части
+      cy.get('[data-cy=bun-bottom]').contains('Краторная булка N-200i').should('not.exist'); // Убедимся что первой булки нет в конструкторе в нижней части
     });
   });
 });
@@ -72,6 +108,7 @@ describe('Тестирование модального окна', () => {
     cy.get('@modal').should('be.empty'); // Проверяем, что модальное окно изначально пусто
     cy.get(FILLING_ID).children('a').click(); // Нажимаем на ссылку внутри элемента начинки
     cy.get('@modal').should('not.be.empty'); // Проверяем, что модальное окно открылось
+    cy.get('@modal').find('h3').contains('Говяжий метеорит (отбивная)'); // Проверяем, что модальное окно содержит соответствующее название продукта
     cy.url().should('include', '643d69a5c3f7b9001cfa0940'); // Проверяем, что URL обновился
   });
 
