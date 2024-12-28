@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { getCookie, setCookie, deleteCookie } from '../../utils/cookie';
+import { setCookie, deleteCookie } from '../../utils/cookie';
 import {
   registerUserApi,
   loginUserApi,
@@ -8,8 +8,7 @@ import {
   updateUserApi,
   logoutApi,
   forgotPasswordApi,
-  resetPasswordApi,
-  TLoginData
+  resetPasswordApi
 } from '../../utils/burger-api';
 
 import { TRegisterData } from '../../utils/burger-api';
@@ -191,4 +190,5 @@ export const {
 } = userInfoSlice.selectors;
 
 // Экспорт редьюсера для управления состоянием пользователя
-export default userInfoSlice.reducer;
+const userInfoReducer = userInfoSlice.reducer;
+export default userInfoReducer;

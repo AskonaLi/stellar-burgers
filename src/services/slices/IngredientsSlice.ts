@@ -58,4 +58,5 @@ export const { getIngredientsStateSelector, getIngredientsSelector } =
   ingredientsSlice.selectors;
 
 // Экспорт редьюсера для работы с состоянием
-export default ingredientsSlice.reducer;
+const ingredientsReducer = ingredientsSlice.reducer;
+export default ingredientsReducer;
